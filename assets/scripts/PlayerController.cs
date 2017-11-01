@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
 	public int playerHealth = 100;
     public GameObject meleeAttack;
     public bool isGrounded;
+	public bool isIdle = true;
+	public bool isWalking = false;
+	public bool isJumping = false;
     public float jumpForce = 700;
 
     public float swordLength;
@@ -64,6 +67,13 @@ public class PlayerController : MonoBehaviour
 
 		// Creates the movement based on which direction the player intends to head
 		gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2 (move * maxSpeed, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+		if (Input.GetButtonDown ("Horizontal")) {
+			anim.SetBool ("isIdle", false);
+			anim.SetBool ("isWalking", true);
+		} else {
+			anim.SetBool ("isIdle", true);
+			anim.SetBool ("isWalking", false);
+		}
 
 
         /*
@@ -89,7 +99,8 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit;
 		if (Input.GetButtonDown ("Jump") && isGrounded) 
 		{
-			//anim.SetBool ("Ground", false);
+			anim.SetBool ("isWalking", false);
+			anim.SetBool ("isJumping", true);
 			gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
 		}
 
